@@ -20,7 +20,6 @@
 		"/dist"
 	],
 	"private": true,
-	"type": "module",
 	"devDependencies": {
 		"typescript": "^4.9.3"
 	}
