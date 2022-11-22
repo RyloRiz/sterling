@@ -1,13 +1,16 @@
+import dotenv from 'dotenv'
+dotenv.config();
+
 import fs from 'node:fs'
 import { REST, Routes } from 'discord.js'
 
 const { CLIENTID, TOKEN } = process.env;
 
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(`${__dirname}/commands`).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(`${__dirname}/commands/${file}`);
 	commands.push(command.data.toJSON());
 }
 
