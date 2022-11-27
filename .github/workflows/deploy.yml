@@ -28,4 +28,5 @@ jobs:
           rm -rf node_modules
           npm i
           tsc
+          node ./dist/deploy-commands.js
           pm2 start ./dist/index.js --name "Discord Bot"
