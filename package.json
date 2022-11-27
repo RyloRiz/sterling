@@ -5,16 +5,17 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "npm pack --pack-destination build",
+		"build": "tsc",
 		"start": "tsc && node ./dist/index.js",
 		"watch": "tsc --watch",
-		"register": "node ./dist/deploy-commands.js"
+		"register": "tsc && node ./dist/deploy-commands.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"@types/node": "^18.11.9",
+		"aws-sdk": "^2.1260.0",
 		"discord.js": "^14.6.0",
 		"dotenv": "^16.0.3"
 	},

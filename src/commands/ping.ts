@@ -7,7 +7,7 @@ module.exports = {
 		.addBooleanOption(option =>
 			option
 				.setName('ephemeral')
-				.setDescription('Whether or not to make this view-only by yourself')),
+				.setDescription('Whether or not to make the response private to you')),
 
 	async execute(interaction: CommandInteraction) {
 		await interaction.reply({

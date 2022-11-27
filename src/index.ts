@@ -3,7 +3,7 @@ dotenv.config();
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 const { TOKEN } = process.env;
 
 declare module "discord.js" {
@@ -47,3 +47,7 @@ for (const file of eventFiles) {
 }
 
 client.login(TOKEN);
+
+/*
+https://discord.com/api/oauth2/authorize?client_id=1044561491329826858&permissions=8&scope=bot%20applications.commands
+*/

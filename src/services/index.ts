@@ -1,0 +1,1 @@
+export { default as DynamoDB} from './dynamo'
