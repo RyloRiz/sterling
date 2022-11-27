@@ -25,4 +25,7 @@ jobs:
           pm2 kill
           cd htdocs/sterling
           git pull
-          
+          rm -rf node_modules
+          npm i
+          tsc
+          pm2 start ./dist/index.js --name "Discord Bot"
