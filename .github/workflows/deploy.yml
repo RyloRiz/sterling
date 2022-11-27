@@ -13,6 +13,40 @@ jobs:
       matrix:
         node-version: [16.x]
 
+    # steps:
+    #   - uses: actions/checkout@v2
+    #   - name: Use Node.js ${{ matrix.node-version }}
+    #     uses: appleboy/ssh-action@master
+    #     with:
+    #       host: ${{ secrets.HOST }}
+    #       USERNAME: ${{ secrets.USERNAME }}
+    #       PORT: ${{ secrets.PORT }}
+    #       KEY: ${{ secrets.SSHKEY }}
+    #       # script: |
+    #       #   pm2 kill
+    #       #   cd htdocs/sterling
+    #       #   git pull
+    #       #   rm -rf node_modules
+    #       #   npm i
+    #       #   tsc
+    #       #   node ./dist/deploy-commands.js
+    #       #   pm2 start ./dist/index.js --name "Discord Bot"
+    #       script: |
+    #         pm2 kill
+    #         cd htdocs
+    #         rm -rf sterling
+    #         git clone https://${{ secrets.ACCESSTOKEN }}@github.com/RyloRiz/sterling.git
+    #         cd sterling
+    #         touch .env
+    #         echo AWS_ACCESS_KEY_ID="${{ secrets.ENV__AWS_ACCESS_KEY_ID }}" >> .env
+    #         echo AWS_SECRET_ACCESS_KEY="${{ secrets.ENV__AWS_SECRET_ACCESS_KEY }}" >> .env
+    #         echo AWS_DEFAULT_REGION="${{ secrets.ENV__AWS_DEFAULT_REGION }}" >> .env
+    #         echo TOKEN="${{ secrets.ENV__TOKEN }}" >> .env
+    #         echo CLIENTID="${{ secrets.ENV__CLIENTID }}" >> .env
+    #         npm i
+    #         tsc
+    #         node ./dist/deploy-commands.js
+    #         pm2 start ./dist/index.js --name "Sterling Bot"
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -22,21 +56,33 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          # script: |
-          #   pm2 kill
-          #   cd htdocs/sterling
-          #   git pull
-          #   rm -rf node_modules
-          #   npm i
-          #   tsc
-          #   node ./dist/deploy-commands.js
-          #   pm2 start ./dist/index.js --name "Discord Bot"
           script: |
             pm2 kill
-            cd htdocs
+            cd /home/${{ secrets.USERNAME }}/htdocs
             rm -rf sterling
-            git clone https://${{ secrets.ACCESSTOKEN }}@github.com/RyloRiz/sterling.git
-            cd sterling
+
+      - uses: actions/checkout@v1
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+        with:
+          source: "."
+          target: "/home/${{ secrets.USERNAME }}/htdocs/sterling"
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: |
+            cd /home/${{ secrets.USERNAME }}/htdocs/sterling
             touch .env
             echo AWS_ACCESS_KEY_ID="${{ secrets.ENV__AWS_ACCESS_KEY_ID }}" >> .env
             echo AWS_SECRET_ACCESS_KEY="${{ secrets.ENV__AWS_SECRET_ACCESS_KEY }}" >> .env
