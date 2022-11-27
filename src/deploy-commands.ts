@@ -7,11 +7,13 @@ import { REST, Routes } from 'discord.js'
 const { CLIENTID, TOKEN } = process.env;
 
 const commands = [];
+const commandNames = [];
 const commandFiles = fs.readdirSync(`${__dirname}/commands`).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`${__dirname}/commands/${file}`);
 	commands.push(command.data.toJSON());
+	commandNames.push(file);
 }
 
 const rest = new REST({ version: '10' }).setToken(TOKEN as string);
@@ -27,6 +29,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN as string);
 			{ body: commands },
 		);
 
+		commandNames.forEach(f => console.log(`Refreshed ${f} (/) command.`));
 		console.log(`Successfully reloaded ${(data as any).length} application (/) commands.`);
 	} catch (error) {
 		console.error(error);
