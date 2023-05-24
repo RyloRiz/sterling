@@ -32,7 +32,16 @@ enum HexCodes {
 	Random = 'Random',
 }
 
+enum PremiumTypes {
+	OneMonth = 1,
+	ThreeMonth = 3,
+	SixMonth = 6,
+	OneYear = 12,
+}
+
 enum SterlingEmbedMode {
+	Barebones,
+	Casual,
 	Currency,
 	Developer,
 	Formal,
@@ -41,5 +50,6 @@ enum SterlingEmbedMode {
 
 export {
 	HexCodes,
-	SterlingEmbedMode
+	PremiumTypes,
+	SterlingEmbedMode,
 }

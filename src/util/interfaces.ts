@@ -1,5 +1,5 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { User } from '../classes';
+import { User } from '../models';
 import { Primitive, SterlingEmbedMode } from './'
 
 interface DynamoDBUpdateData {
@@ -23,9 +23,16 @@ interface SterlingItem {
 	name: string;
 }
 
+interface SterlingTimeout {
+	command: string,
+	timestamp: number,
+}
+
 interface SterlingUserData {
 	bank: number,
 	inventory: SterlingItem[],
+	timeouts: SterlingTimeout[],
+	premium: number, // 0 = no premium, anything else is the timestamp of the expire date
 	wallet: number,
 }
 

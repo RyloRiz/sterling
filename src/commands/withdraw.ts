@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { SterlingEmbed, UserManager } from '../classes'
-import { prettyNum, SterlingEmbedMode } from '../util'
+import { SterlingEmbed, UserManager } from '../models'
+import { prettyNum } from '../util'
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,18 +16,14 @@ module.exports = {
 		let amount = (interaction.options.get('amount')?.value || user.data.bank) as number;
 		user.removeBank(amount);
 		user.addWallet(amount);
-		let sEmbed = new SterlingEmbed({
-			debug: true,
-			debugInfo: user.consumedCapacity,
-			mode: SterlingEmbedMode.Currency
-		})
+		let sEmbed = SterlingEmbed.currency()
 			.addFields(
-				{ name: 'Withdrew', value: `💰${prettyNum(amount)}`, inline: false },
-				{ name: 'New Wallet Balance', value: `💰${prettyNum(user.data.wallet)}`, inline: false },
-				{ name: 'New Bank Balance', value: `💰${prettyNum(user.data.bank)}`, inline: true },
+				{ name: 'Withdrew', value: `${prettyNum(amount)}`, inline: false },
+				{ name: 'New Wallet Balance', value: `${prettyNum(user.data.wallet)}`, inline: true },
+				{ name: 'New Bank Balance', value: `${prettyNum(user.data.bank)}`, inline: true },
 			);
 		await interaction.reply({
-			embeds: [sEmbed.embed]
+			embeds: [sEmbed.export()]
 		});
 	},
 };

@@ -5,3 +5,5 @@ node_modules
 
 # Files
 .env
+*.ps1
+tsconfig.tsbuildinfo

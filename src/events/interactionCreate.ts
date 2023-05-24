@@ -1,22 +1,50 @@
-import { CommandInteraction, Events } from 'discord.js';
+import { Events, Interaction } from 'discord.js';
 
 module.exports = {
 	name: Events.InteractionCreate,
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: Interaction) { // CommandInteraction
+		if (interaction.isButton()) {
+			const button = interaction.client.buttons.get(interaction.customId);
 
-		const command = interaction.client.commands.get(interaction.commandName);
+			if (!button) {
+				console.error(`No button matching ${interaction.customId} was found!`);
+				return;
+			}
 
-		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found!`);
-			return;
-		}
+			try {
+				await button.execute(interaction);
+			} catch (error) {
+				console.error(`Error executing command ${interaction.customId}`);
+				console.error(error);
+			}
+		} else if (interaction.isChatInputCommand()) {
+			const command = interaction.client.commands.get(interaction.commandName);
 
-		try {
-			await command.execute(interaction);
-		} catch (error) {
-			console.error(`Error executing ${interaction.commandName}`);
-			console.error(error);
+			if (!command) {
+				console.error(`No command matching ${interaction.commandName} was found!`);
+				return;
+			}
+
+			try {
+				await command.execute(interaction);
+			} catch (error) {
+				console.error(`Error executing command ${interaction.commandName}`);
+				console.error(error);
+			}
+		} else if (interaction.isSelectMenu()) {
+			const menu = interaction.client.menus.get(interaction.customId);
+
+			if (!menu) {
+				console.error(`No select menu matching ${interaction.customId} was found!`);
+				return;
+			}
+
+			try {
+				await menu.execute(interaction);
+			} catch (error) {
+				console.error(`Error executing select menu ${interaction.customId}`);
+				console.error(error);
+			}
 		}
 	},
 };

@@ -1,3 +1,3 @@
 export const globals = {
-	OWNER_ID: '1046255431233851412'
+	OWNER_ID: '1026716424409993288'
 }

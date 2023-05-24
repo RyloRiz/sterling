@@ -1,5 +1,5 @@
 import { UserManagerList, ValueOf } from '../util'
-import { User } from './'
+import { User } from '.'
 
 class UserManager {
 	public users: UserManagerList = {};
@@ -9,9 +9,10 @@ class UserManager {
 				// v = v as typeof this.users[keyof UserManagerList]
 				let k2: number = Number(k);
 				let v2: ValueOf<UserManagerList> = v;
-				if (v2.timestamp + 30000 < Date.now()) {
+				if (v2.timestamp + 120000 < Date.now()) {
+					console.log("Killing " + v2.user.userId);
 					v2.user.destruct();
-					delete this.users[k2];
+					delete this.users[k];
 				}
 			}
 		}, 60000);
@@ -35,7 +36,7 @@ class UserManager {
 		// 	}
 		// }
 		let uKey = Object.keys(this.users).find(id => id === userId);
-		if (uKey) {
+		if (uKey && this.users[Number(uKey)]) {
 			let uTbl = this.users[Number(uKey)];
 			uTbl.timestamp = Date.now();
 			if (uTbl) return uTbl.user;
