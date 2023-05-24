@@ -1,5 +1,5 @@
 import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { SterlingEmbed, UserManager } from '../models';
+import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,6 +7,9 @@ module.exports = {
 		.setDescription('Buy Sterling Premium!'),
 
 	async execute(interaction: CommandInteraction) {
+		return await interaction.reply({
+			embeds: [DisabledCommandEmbed.export()]
+		});
 		let embed = SterlingEmbed.casual()
 			.setTitle('Thank you for buying Sterling Premium')
 			.setDescription('This purchase will support the developers hard at work developing Sterling. For now, here\'s the pricing details:')

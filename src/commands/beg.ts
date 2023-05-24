@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { SterlingEmbed, UserManager } from '../models'
+import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models'
 import { prettyNum } from '../util'
 
 module.exports = {
@@ -8,6 +8,9 @@ module.exports = {
 		.setDescription('Beg the locals for money'),
 
 	async execute(interaction: CommandInteraction) {
+		return await interaction.reply({
+			embeds: [DisabledCommandEmbed.export()]
+		});
 		let user = await UserManager.getUser(interaction.user.id);
 		let amount = Math.round(Math.random() * 100);
 		user.addWallet(amount);

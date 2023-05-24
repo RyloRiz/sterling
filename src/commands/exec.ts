@@ -690,7 +690,7 @@ module.exports = {
 		} else {
 			const errorE = SterlingEmbed.casual()
 				.setColor(HexCodes.Orange)
-				.setDescription(`You do not have permission to run this command! Only admins can create journals.`);
+				.setDescription(`You do not have permission to run this command! Only admins can use the exec REPL.`);
 			await interaction.reply({
 				embeds: [errorE.export()]
 			});

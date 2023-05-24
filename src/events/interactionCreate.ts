@@ -1,8 +1,14 @@
 import { Events, Interaction } from 'discord.js';
+import { globals } from '../util';
 
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction: Interaction) { // CommandInteraction
+		if (interaction.client.settings.get('silentMode') === true && interaction.user.id !== globals.OWNER_ID) {
+			console.log("Refused to fulfill request by", interaction.user.id);
+			return null;
+		}
+
 		if (interaction.isButton()) {
 			const button = interaction.client.buttons.get(interaction.customId);
 

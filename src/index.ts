@@ -11,6 +11,7 @@ declare module "discord.js" {
 		buttons: Collection<unknown, any>,
 		commands: Collection<unknown, any>,
 		menus: Collection<unknown, any>,
+		settings: Map<string, any>,
 	}
 }
 
@@ -20,9 +21,19 @@ const client = new Client({
 	]
 });
 
+// Map<{ guildId: targetChannelId }>
+const _backdoorMode = new Map<string, string>();
+
 client.buttons = new Collection();
 client.commands = new Collection();
 client.menus = new Collection();
+client.settings = new Map<string, any>();
+
+client.settings.set('backdoorMode', _backdoorMode);
+client.settings.set('backdoorLogging', {
+	guildId: '1043622457153703998',
+});
+client.settings.set('silentMode', true);
 
 const buttonsPath = path.join(__dirname, 'buttons');
 const buttonFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
@@ -78,11 +89,14 @@ for (const file of eventFiles) {
 
 client.login(TOKEN)
 	.then((token) => {
+		// client.user?.setPresence({
+		// 	activities: [
+		// 		{ name: '/help', type: ActivityType.Listening }
+		// 	],
+		// 	status: PresenceUpdateStatus.Online,
+		// });
 		client.user?.setPresence({
-			activities: [
-				{ name: '/help', type: ActivityType.Listening }
-			],
-			status: PresenceUpdateStatus.Online,
+			status: PresenceUpdateStatus.Invisible,
 		});
 	});
 

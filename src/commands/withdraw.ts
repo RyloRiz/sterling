@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { SterlingEmbed, UserManager } from '../models'
+import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models'
 import { prettyNum } from '../util'
 
 module.exports = {
@@ -12,6 +12,9 @@ module.exports = {
 				.setDescription('Amount of money to withdraw')),
 
 	async execute(interaction: CommandInteraction) {
+		return await interaction.reply({
+			embeds: [DisabledCommandEmbed.export()]
+		});
 		let user = await UserManager.getUser(interaction.user.id);
 		let amount = (interaction.options.get('amount')?.value || user.data.bank) as number;
 		user.removeBank(amount);

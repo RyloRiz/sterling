@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { SterlingEmbed, UserManager } from '../models'
+import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models'
 import { prettyNum } from '../util'
 
 module.exports = {
@@ -12,6 +12,9 @@ module.exports = {
 	// 		.setDescription('User to see balance')),
 
 	async execute(interaction: CommandInteraction) {
+		return await interaction.reply({
+			embeds: [DisabledCommandEmbed.export()]
+		});
 		let user = await UserManager.getUser(interaction.user.id);
 		let sEmbed = SterlingEmbed.currency()
 			.addFields(

@@ -140,3 +140,7 @@ class SterlingEmbed {
 }
 
 export default SterlingEmbed;
+
+export const DisabledCommandEmbed = SterlingEmbed.barebones();
+DisabledCommandEmbed.setTitle('Command Disabled');
+DisabledCommandEmbed.setDescription('We\'re sorry, but this command has been disabled for the time being. Please check again later.')

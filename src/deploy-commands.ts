@@ -75,5 +75,6 @@ const rest = new REST({ version: '10' }).setToken(TOKEN as string);
 		process.exit();
 	} catch (error) {
 		console.error(error);
+		console.log(JSON.stringify(error))
 	}
 })();
