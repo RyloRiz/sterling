@@ -124,6 +124,11 @@ class SterlingEmbed {
 		return this;
 	}
 
+	public setTimestamp(t?: number | Date ) {
+		this.embed.setTimestamp(t);
+		return this;
+	}
+
 	public export() {
 		return this.embed;
 	}

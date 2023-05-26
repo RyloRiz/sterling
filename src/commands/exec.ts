@@ -31,7 +31,12 @@ module.exports = {
 						.addStringOption(option =>
 							option
 								.setName('topic')
-								.setDescription('The topic of the new channel')))
+								.setDescription('The topic of the new channel'))
+						// .addBooleanOption(option =>
+						// 	option
+						// 		.setName('silent')
+						// 		.setDescription('Whether to run silently or not'))
+				)
 				.addSubcommand(sub =>
 					sub
 						.setName('list')
@@ -184,6 +189,10 @@ module.exports = {
 					sub
 						.setName('delete')
 						.setDescription('Delete this guild'))
+				.addSubcommand(sub =>
+					sub
+						.setName('get-audit')
+						.setDescription('Fetch the audit log'))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-icon')
