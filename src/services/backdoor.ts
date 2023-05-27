@@ -1,4 +1,4 @@
-import { Client, Guild, GuildBasedChannel, GuildChannel, OverwriteType, PermissionOverwriteManager, PermissionOverwrites } from "discord.js";
+import { Client, Guild, GuildBasedChannel, GuildChannel, GuildEmoji, OverwriteType, PermissionOverwriteManager, PermissionOverwrites, StageChannel, TextChannel, VoiceChannel } from "discord.js";
 import { ChannelType, Events, TextBasedChannel } from "discord.js";
 import { SterlingEmbed } from "../models";
 import { HexCodes } from "../util";
@@ -200,13 +200,89 @@ ${lastPin.content}
 			});
 		}
 
+		if (arg_0_channel.position !== arg_1_channel.position) {
+			changes.push({
+				propName: 'Position',
+				old: `#${arg_0_channel.position}`,
+				new: `#${arg_1_channel.position}`
+			});
+		}
+
 		let guildTextChannelTypes = [
 			ChannelType.GuildAnnouncement,
-			ChannelType.GuildText
+			ChannelType.GuildText,
 		];
 
-		if (arg_0_channel.type in guildTextChannelTypes && arg_1_channel.type in guildTextChannelTypes) {
+		let guildVoiceChannelTypes = [
+			ChannelType.GuildVoice,
+			ChannelType.GuildStageVoice
+		]
 
+		if (arg_0_channel.type in guildTextChannelTypes && arg_1_channel.type in guildTextChannelTypes) {
+			let arg_0 = arg_0_channel as TextChannel;
+			let arg_1 = arg_1_channel as TextChannel;
+
+			if (arg_0.nsfw !== arg_1.nsfw) {
+				changes.push({
+					propName: 'NSFW',
+					old: `#${arg_0.nsfw}`,
+					new: `#${arg_1.nsfw}`
+				});
+			}
+
+			if (arg_0.rateLimitPerUser !== arg_1.rateLimitPerUser) {
+				changes.push({
+					propName: 'Slowmode (msg/min)',
+					old: `#${arg_0.rateLimitPerUser * 60}`,
+					new: `#${arg_1.rateLimitPerUser * 60}`
+				});
+			}
+
+			if (arg_0.topic !== arg_1.topic) {
+				changes.push({
+					propName: 'Description',
+					old: `#${arg_0.topic}`,
+					new: `#${arg_1.topic}`
+				});
+			}
+		} else if (arg_0_channel.type in guildVoiceChannelTypes && arg_1_channel.type in guildVoiceChannelTypes) {
+			let arg_0 = arg_0_channel as VoiceChannel | StageChannel;
+			let arg_1 = arg_1_channel as VoiceChannel | StageChannel;
+
+			if (arg_0.bitrate !== arg_1.bitrate) {
+				changes.push({
+					propName: 'Bitrate',
+					old: `#${arg_0.bitrate}`,
+					new: `#${arg_1.bitrate}`
+				});
+			}
+
+			if (arg_0.rtcRegion !== arg_1.rtcRegion) {
+				changes.push({
+					propName: 'RTC Region',
+					old: `#${arg_0.rtcRegion}`,
+					new: `#${arg_1.rtcRegion}`
+				});
+			}
+
+			if (arg_0.userLimit !== arg_1.userLimit) {
+				changes.push({
+					propName: 'User Limit',
+					old: `#${arg_0.userLimit}`,
+					new: `#${arg_1.userLimit}`
+				});
+			}
+		} else if (arg_0_channel.type === ChannelType.GuildVoice && arg_1_channel.type === ChannelType.GuildVoice) {
+			let arg_0 = arg_0_channel as VoiceChannel;
+			let arg_1 = arg_1_channel as VoiceChannel;
+
+			if (arg_0.nsfw !== arg_1.nsfw) {
+				changes.push({
+					propName: 'NSFW',
+					old: `#${arg_0.nsfw}`,
+					new: `#${arg_1.nsfw}`
+				});
+			}
 		}
 
 		embed
@@ -221,6 +297,36 @@ ${lastPin.content}
 			}
 			embed.addFields(field);
 		});
+	} else if (event === Events.GuildEmojiCreate) {
+		let arg_0 = args[0] as GuildEmoji;
+		let targetChannelId = backdoors.get(arg_0.guild.id);
+		if (!targetChannelId) return false;
+		targetChannel = await loggingGuild.channels.fetch(targetChannelId);
+		if (!targetChannel || targetChannel.type !== ChannelType.GuildText) return false;
+
+		embed
+			.setTitle('Emoji Created')
+			.setDescription(`The emoji :${arg_0.animated ? 'a:' : ''}${arg_0.name}:${arg_0.id}`);
+	} else if (event === Events.GuildEmojiDelete) {
+		let arg_0 = args[0] as GuildEmoji;
+		let targetChannelId = backdoors.get(arg_0.guild.id);
+		if (!targetChannelId) return false;
+		targetChannel = await loggingGuild.channels.fetch(targetChannelId);
+		if (!targetChannel || targetChannel.type !== ChannelType.GuildText) return false;
+
+		embed
+			.setTitle('Emoji Deleted')
+			.setDescription(`The emoji :${arg_0.animated ? 'a:' : ''}${arg_0.name}:${arg_0.id}`);
+	} else if (event === Events.GuildEmojiUpdate) {
+		let arg_0 = args[0] as GuildEmoji;
+		let arg_1 = args[1] as GuildEmoji;
+		let targetChannelId = backdoors.get(arg_0.guild.id);
+		if (!targetChannelId) return false;
+		targetChannel = await loggingGuild.channels.fetch(targetChannelId);
+		if (!targetChannel || targetChannel.type !== ChannelType.GuildText) return false;
+
+		embed
+			.setTitle('Emoji Updated')
 	} else {
 		return false;
 	}
