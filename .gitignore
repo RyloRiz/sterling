@@ -4,6 +4,7 @@ dist
 node_modules
 
 # Files
+.DS_Store
 .env
 *.ps1
 tsconfig.tsbuildinfo

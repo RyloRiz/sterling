@@ -667,6 +667,13 @@ module.exports = {
 					} else if (subcmd === 'mute') {
 					} else if (subcmd === 'nickname') {
 					} else if (subcmd === 'timeout') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						const s = interaction.options.getInteger('duration') as number;
+						if (s === 0) {
+							member.disableCommunicationUntil(null);
+						} else {
+							member.disableCommunicationUntil(Date.now() + (s * 1000));
+						}
 					}
 
 					break;
@@ -674,6 +681,7 @@ module.exports = {
 
 					if (subcmd === 'create') {
 					} else if (subcmd === 'list') {
+						let roles = await guild?.roles.fetch();
 					} else if (subcmd === 'delete') {
 					} else if (subcmd === 'set-color') {
 					} else if (subcmd === 'set-hoist') {
