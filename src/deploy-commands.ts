@@ -19,6 +19,9 @@ interface GuildCommands {
 	names: string[];
 }
 
+const toDelete: string[] = [
+	// '' // /settings
+];
 const commands = [];
 const commandNames = [];
 const guildCommands: GCS = {};
@@ -49,6 +52,19 @@ const rest = new REST({ version: '10' }).setToken(TOKEN as string);
 
 (async () => {
 	try {
+		console.log(`Started deleting ${toDelete.length} application (/) commands.`);
+
+		toDelete.forEach(async (tD) => {
+			try {
+				await rest.delete(Routes.applicationCommand(CLIENTID as string, tD))
+			} catch (e) {
+				console.error(e);
+			} finally {
+				console.log('Successfully deleted application command');
+			}
+		});
+
+		console.log(`Successfully deleted ${toDelete.length} application (/) commands.`);
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		// The put method is used to fully refresh all commands in the guild with the current set

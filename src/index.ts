@@ -1,8 +1,9 @@
-import dotenv from 'dotenv'
-dotenv.config();
+// import dotenv from 'dotenv'
+// dotenv.config();
 
 import fs from 'node:fs';
 import path from 'node:path';
+import express from 'express';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits, PresenceUpdateStatus } from 'discord.js';
 const { TOKEN } = process.env;
 
@@ -14,6 +15,13 @@ declare module "discord.js" {
 		settings: Map<string, any>,
 	}
 }
+
+const ePORT = 3000;
+const app = express();
+
+app.get('*', (req, res) => {
+	res.status(200).send("Hello world!");
+});
 
 const client = new Client({
 	intents: [
@@ -33,7 +41,7 @@ client.settings.set('backdoorMode', _backdoorMode);
 client.settings.set('backdoorLogging', {
 	guildId: '1043622457153703998',
 });
-client.settings.set('silentMode', true);
+client.settings.set('silentMode', false);
 
 const buttonsPath = path.join(__dirname, 'buttons');
 const buttonFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
@@ -87,17 +95,22 @@ for (const file of eventFiles) {
 	}
 }
 
+app.listen(ePORT, () => {
+	console.log(`Server is running on port ${ePORT}`);
+});
+
+
 client.login(TOKEN)
 	.then((token) => {
-		// client.user?.setPresence({
-		// 	activities: [
-		// 		{ name: '/help', type: ActivityType.Listening }
-		// 	],
-		// 	status: PresenceUpdateStatus.Online,
-		// });
 		client.user?.setPresence({
-			status: PresenceUpdateStatus.Invisible,
+			activities: [
+				{ name: '/help', type: ActivityType.Listening }
+			],
+			status: PresenceUpdateStatus.Online,
 		});
+		// client.user?.setPresence({
+		// 	status: PresenceUpdateStatus.Invisible,
+		// });
 	});
 
 /*
