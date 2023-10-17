@@ -33,7 +33,7 @@ const client = new Client({
 	]
 });
 
-const jsonbin = new JSONBin(JSONBIN_MASTER_KEY as string, JSONBIN_ACCESS_KEY as string);
+// const jsonbin = new JSONBin(JSONBIN_MASTER_KEY as string, JSONBIN_ACCESS_KEY as string);
 
 // Map<{ guildId: targetChannelId }>
 const _backdoorMode = new Map<string, string>();
@@ -41,9 +41,9 @@ const _backdoorMode = new Map<string, string>();
 client.buttons = new Collection();
 client.commands = new Collection();
 client.menus = new Collection();
-client.services = {
-	jsonbin: jsonbin
-};
+// client.services = {
+// 	jsonbin: jsonbin
+// };
 client.settings = new Map<string, any>();
 
 client.settings.set('backdoorMode', _backdoorMode);
