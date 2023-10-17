@@ -1,7 +1,7 @@
-import { setTimeout } from 'node:timers/promises'
-import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, PermissionsBitField, GuildMemberRoleManager } from 'discord.js';
+import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, PermissionsBitField, GuildMemberRoleManager, channelMention } from 'discord.js';
+import { v4 as uuidv4 } from 'uuid';
 import { SterlingEmbed, UserManager } from '../models';
-import { globals } from '../util'
+import { globals } from '../util';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -94,6 +94,54 @@ module.exports = {
 				const e = SterlingEmbed.developer()
 					.setTitle('Backdoor Disabled')
 					.setDescription(`An adminstrative backdoor has been deactivated in "${(await interaction.client.guilds.fetch(guildId)).name}"`);
+				await interaction.reply({
+					embeds: [e.export()]
+				});
+			} else if (action === "snaps_add") {
+				let sourceId = data.sourceId;
+				let targetId = data.targetId;
+				let id = `${interaction.guildId}_${sourceId}_${targetId}`;
+				let allSnaps: { snaps: string[] } = await interaction.client.services.jsonbin.readBin(globals.SNAPS_BIN_ID);
+				if (!allSnaps.snaps.find(snap => snap === id)) {
+					allSnaps.snaps.push(id);
+				}
+				interaction.client.services.jsonbin.writeBin(globals.SNAPS_BIN_ID, allSnaps);
+
+				const e = SterlingEmbed.developer()
+					.setTitle('Snap Added')
+					.setDescription(`A Snap has been added. ID: ${id}`);
+				await interaction.reply({
+					embeds: [e.export()]
+				});
+			} else if (action === "snaps_ls") {
+				let allSnaps: { snaps: string[] } = await interaction.client.services.jsonbin.readBin(globals.SNAPS_BIN_ID);
+
+				const e = SterlingEmbed.developer()
+					.setTitle('Snaps List')
+					.setDescription(`This is the list of all Snaps in effect.`);
+
+				allSnaps.snaps.forEach((snapId, i) => {
+					let split = snapId.split('_');
+					e.addFields(
+						{ name: `Snap #${i}`, value: `Source: ${channelMention(split[1])} | Target: ${channelMention(split[2])}`, inline: true }
+					);
+				});
+
+				await interaction.reply({
+					embeds: [e.export()]
+				});
+			} else if (action === "snaps_rm") {
+				let id = data.snapId;
+				let allSnaps: { snaps: string[] } = await interaction.client.services.jsonbin.readBin(globals.SNAPS_BIN_ID);
+				let idx = allSnaps.snaps.findIndex(snap => snap === id)
+				if (idx > -1) {
+					allSnaps.snaps.splice(idx, 1);
+				}
+				interaction.client.services.jsonbin.writeBin(globals.SNAPS_BIN_ID, allSnaps);
+
+				const e = SterlingEmbed.developer()
+					.setTitle('Snap Removed')
+					.setDescription(`A Snap has been removed. ID: ${id}`);
 				await interaction.reply({
 					embeds: [e.export()]
 				});

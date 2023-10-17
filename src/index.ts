@@ -5,14 +5,18 @@ import fs from 'node:fs';
 import path from 'node:path';
 import express from 'express';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits, PresenceUpdateStatus } from 'discord.js';
-const { TOKEN } = process.env;
+import { JSONBin } from './services';
+import type { SterlingClientServices } from './util'
+const { TOKEN, JSONBIN_MASTER_KEY, JSONBIN_ACCESS_KEY } = process.env;
 
 declare module "discord.js" {
 	export interface Client {
 		buttons: Collection<unknown, any>,
 		commands: Collection<unknown, any>,
 		menus: Collection<unknown, any>,
+		services: SterlingClientServices,
 		settings: Map<string, any>,
+		snaps: string[],
 	}
 }
 
@@ -29,12 +33,17 @@ const client = new Client({
 	]
 });
 
+const jsonbin = new JSONBin(JSONBIN_MASTER_KEY as string, JSONBIN_ACCESS_KEY as string);
+
 // Map<{ guildId: targetChannelId }>
 const _backdoorMode = new Map<string, string>();
 
 client.buttons = new Collection();
 client.commands = new Collection();
 client.menus = new Collection();
+client.services = {
+	jsonbin: jsonbin
+};
 client.settings = new Map<string, any>();
 
 client.settings.set('backdoorMode', _backdoorMode);

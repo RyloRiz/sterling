@@ -1,5 +1,6 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { User } from '../models';
+import type { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import type { User } from '../models';
+import type { JSONBin } from '../services';
 import { Primitive, SterlingEmbedMode } from './'
 
 interface DynamoDBUpdateData {
@@ -10,6 +11,9 @@ interface DynamoDBItem {
 	[key: string]: Map<string, any>
 }
 
+interface SterlingClientServices {
+	jsonbin: JSONBin;
+}
 
 interface SterlingEmbedOptions {
 	debug?: boolean;
@@ -46,6 +50,7 @@ interface UserManagerList {
 export {
 	DynamoDBUpdateData,
 	DynamoDBItem,
+	SterlingClientServices,
 	SterlingEmbedOptions,
 	SterlingItem,
 	SterlingUserData,
