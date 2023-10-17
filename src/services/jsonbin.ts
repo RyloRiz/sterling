@@ -32,7 +32,7 @@ class JSONBin {
 				method: 'GET',
 				headers: {
 					'X-Master-Key': this.masterKey,
-					// 'X-Access-Key': this.accessKey,
+					/* 'X-Access-Key': this.accessKey, */
 				}
 			});
 			if (res.status === 200) {
@@ -61,7 +61,7 @@ class JSONBin {
 			headers: {
 				'Content-Type': 'application/json',
 				'X-Master-Key': this.masterKey,
-				// 'X-Access-Key': this.accessKey,
+				/* 'X-Access-Key': this.accessKey, */
 			},
 			data: JSON.stringify(data),
 		});
