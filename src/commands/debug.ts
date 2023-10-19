@@ -1,7 +1,7 @@
-import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, PermissionsBitField, GuildMemberRoleManager, channelMention } from 'discord.js';
+import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, PermissionsBitField, GuildMemberRoleManager, channelMention, ChatInputCommandInteraction } from 'discord.js';
 // import { v4 as uuidv4 } from 'uuid';
-import { SterlingEmbed, UserManager } from '../models';
-import { globals } from '../util';
+import { SterlingEmbed, /*UserManager*/ } from '../models';
+import { globals, unsupportedCommand } from '../util';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,21 +17,22 @@ module.exports = {
 				.setRequired(false))
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
-	async execute(interaction: CommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (interaction.user?.id === globals.OWNER_ID) {
 			const action = interaction.options.get('action')?.value as string || 'general';
 			const json = interaction.options.get('data')?.value as string || '{}';
 			const data = JSON.parse(json);
 			if (action === "general") {
-				const e = SterlingEmbed.developer();
-				const fieldValue = Object.keys(UserManager.users).length.toString() + ' users';
-				e.addFields(
-					{ name: 'User Pool', value: fieldValue, inline: true },
-				);
-				await interaction.reply({
-					content: fieldValue + '|CONTENT:' + JSON.stringify(UserManager.users),
-					embeds: [e.export()]
-				});
+				unsupportedCommand(interaction);
+				// const e = SterlingEmbed.developer();
+				// const fieldValue = Object.keys(UserManager.users).length.toString() + ' users';
+				// e.addFields(
+				// 	{ name: 'User Pool', value: fieldValue, inline: true },
+				// );
+				// await interaction.reply({
+				// 	content: fieldValue + '|CONTENT:' + JSON.stringify(UserManager.users),
+				// 	embeds: [e.export()]
+				// });
 			} else if (action === "override") {
 				const roles = await interaction.guild?.roles.fetch();
 				const adminRole = roles?.find(role => role.permissions.has(PermissionsBitField.Flags.Administrator) && role.managed === false);

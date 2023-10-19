@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models'
+import { DisabledCommandEmbed, SterlingEmbed, /*UserManager*/ } from '../models'
 import { prettyNum } from '../util'
 
 module.exports = {
@@ -15,14 +15,14 @@ module.exports = {
 		return await interaction.reply({
 			embeds: [DisabledCommandEmbed.export()]
 		});
-		let user = await UserManager.getUser(interaction.user.id);
-		let sEmbed = SterlingEmbed.currency()
-			.addFields(
-				{ name: 'Wallet Balance', value: `${prettyNum(user.data.wallet)}`, inline: false },
-				{ name: 'Bank Balance', value: `${prettyNum(user.data.bank)}`, inline: false },
-			);
-		await interaction.reply({
-			embeds: [sEmbed.export()]
-		});
+		// let user = await UserManager.getUser(interaction.user.id);
+		// let sEmbed = SterlingEmbed.currency()
+		// 	.addFields(
+		// 		{ name: 'Wallet Balance', value: `${prettyNum(user.data.wallet)}`, inline: false },
+		// 		{ name: 'Bank Balance', value: `${prettyNum(user.data.bank)}`, inline: false },
+		// 	);
+		// await interaction.reply({
+		// 	embeds: [sEmbed.export()]
+		// });
 	},
 };

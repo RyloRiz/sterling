@@ -2,7 +2,7 @@ import { incrementDateByOneMonth, PremiumTypes, SterlingUserData } from '../util
 import { DynamoDB } from '../services'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
-const db = new DynamoDB('SterlingBot');
+const db: any = {} //new DynamoDB('SterlingBot');
 
 class User {
 	public active: boolean = true;

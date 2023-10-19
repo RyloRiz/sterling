@@ -1,5 +1,5 @@
 import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder, CommandInteraction } from 'discord.js';
-import { DisabledCommandEmbed, SterlingEmbed, UserManager } from '../models';
+import { DisabledCommandEmbed, SterlingEmbed } from '../models';
 
 module.exports = {
 	data: new SlashCommandBuilder()
