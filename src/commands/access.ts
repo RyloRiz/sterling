@@ -148,6 +148,10 @@ module.exports = {
 						{
 							id: member.id,
 							allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+						},
+						{
+							id: interaction.guild?.roles.everyone.id as string,
+							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
 						}
 					]
 				});
@@ -188,6 +192,10 @@ module.exports = {
 					permissionOverwrites: [
 						{
 							id: member.id,
+							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+						},
+						{
+							id: interaction.guild?.roles.everyone.id as string,
 							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
 						}
 					]

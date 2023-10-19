@@ -24,6 +24,11 @@ async function monitorAccess(client: Client) {
 						ids.push(userMention(m.id));
 					});
 
+					overwrites.push({
+						id: channel.guild?.roles.everyone.id as string,
+						deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+					})
+
 					await channel.edit({
 						permissionOverwrites: overwrites
 					});

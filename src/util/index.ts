@@ -14,5 +14,10 @@ export const ACCESS_DATABASE: {
 		channel_id: '1164349935387430922',
 		owner: globals.OWNER_ID,
 		timeout: '07:30' //'00:30'
+	},
+	'btest': {
+		channel_id: '1164497774360920075',
+		owner: globals.OWNER_ID,
+		timeout: '07:30' //'00:30'
 	}
 }
