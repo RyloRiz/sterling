@@ -112,7 +112,7 @@ module.exports = {
 				.addStringOption(option =>
 					option
 						.setName('timeout')
-						.setDescription('The time of day (in PST) to automatically revoke access to all members daily. Use "HH:MM" where HH (hours) is 00-23 and MM (minutes) is 00-59')
+						.setDescription('The time (PST) to auto-revoke access to all members daily - "HH:MM" (HH=00-23 & MM=00-59)')
 						.setRequired(false)
 				)
 		)
