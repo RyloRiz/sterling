@@ -1,5 +1,18 @@
+import { globals } from "./globals"
+import { AccessDBEntry } from "./interfaces"
+
 export { Primitive, ValueOf } from "./types"
 export { HexCodes, PremiumTypes, SterlingEmbedMode } from "./enum"
-export { DynamoDBUpdateData, DynamoDBItem, SterlingClientServices, SterlingItem, SterlingUserData, SterlingEmbedOptions, UserManagerList } from "./interfaces"
-export { incrementDateByOneMonth, prettyNum, validateInteraction } from "./functions"
+export * from "./interfaces"
+export * from "./functions"
 export { globals } from './globals'
+
+export const ACCESS_DATABASE: {
+	[key: string]: AccessDBEntry
+} = {
+	'widi': {
+		channel_id: '1164349935387430922',
+		owner: globals.OWNER_ID,
+		timeout: '07:30' //'00:30'
+	}
+}

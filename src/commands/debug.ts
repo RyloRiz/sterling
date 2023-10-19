@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, PermissionsBitField, GuildMemberRoleManager, channelMention } from 'discord.js';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { SterlingEmbed, UserManager } from '../models';
 import { globals } from '../util';
 

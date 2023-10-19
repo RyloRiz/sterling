@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import express from 'express';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits, PresenceUpdateStatus } from 'discord.js';
-import { JSONBin } from './services';
+import { monitorAccess } from './services';
 import type { SterlingClientServices } from './util'
 const { TOKEN, JSONBIN_MASTER_KEY, JSONBIN_ACCESS_KEY } = process.env;
 
@@ -117,6 +117,7 @@ client.login(TOKEN)
 			],
 			status: PresenceUpdateStatus.Online,
 		});
+		monitorAccess(client);
 		// client.user?.setPresence({
 		// 	status: PresenceUpdateStatus.Invisible,
 		// });

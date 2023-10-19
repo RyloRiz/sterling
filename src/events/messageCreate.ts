@@ -6,6 +6,6 @@ module.exports = {
 	name: Events.MessageCreate,
 	execute(message: Message) {
 		runBackdoor(message.client, Events.MessageCreate, [message]);
-		captureSnaps(message.client, message);
+		// captureSnaps(message.client, message);
 	},
 };

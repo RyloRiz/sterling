@@ -12,12 +12,12 @@ class JSONBin {
 		this.masterKey = mK;
 		this.cache = new Map<string, any>();
 
-		setInterval(() => {
-			this.changed.forEach((binId) => {
-				this.saveBinId(binId, this.readBin(binId));
-			});
-			this.changed.splice(0, this.changed.length);
-		}, 15000);
+		// setInterval(() => {
+		// 	this.changed.forEach((binId) => {
+		// 		this.saveBinId(binId, this.readBin(binId));
+		// 	});
+		// 	this.changed.splice(0, this.changed.length);
+		// }, 15000);
 	}
 
 	public clearCache() {

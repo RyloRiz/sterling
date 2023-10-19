@@ -1,5 +1,6 @@
-import { ButtonInteraction, CacheType, SelectMenuInteraction } from 'discord.js'
+import { ButtonInteraction, CacheType, ChatInputCommandInteraction, SelectMenuInteraction } from 'discord.js'
 import { SterlingEmbed } from '../models';
+import { HexCodes } from './enum';
 
 export function incrementDateByOneMonth(d: Date) {
 	if (d.getMonth() == 11) {
@@ -11,6 +12,16 @@ export function incrementDateByOneMonth(d: Date) {
 
 export function prettyNum(x: number) {
 	return '◎' + (x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+}
+
+export function unsupportedCommand(interaction: ChatInputCommandInteraction): void {
+	const embed = SterlingEmbed.casual()
+		.setColor(HexCodes.Orange)
+		.setTitle('Unsupported Command')
+		.setDescription('This command is either unsupported or unfinished. Check again later!');
+	interaction.reply({
+		embeds: [embed.export()]
+	});
 }
 
 export function validateInteraction(interaction: SelectMenuInteraction<CacheType> | ButtonInteraction<CacheType>): boolean {

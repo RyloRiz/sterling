@@ -3,6 +3,12 @@ import type { User } from '../models';
 import type { JSONBin } from '../services';
 import { Primitive, SterlingEmbedMode } from './'
 
+interface AccessDBEntry {
+	channel_id: string;
+	owner: string;
+	timeout?: string;
+}
+
 interface DynamoDBUpdateData {
 	[key: string]: Primitive
 }
@@ -48,6 +54,7 @@ interface UserManagerList {
 }
 
 export {
+	AccessDBEntry,
 	DynamoDBUpdateData,
 	DynamoDBItem,
 	SterlingClientServices,
