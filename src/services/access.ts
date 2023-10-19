@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, type Client, type TextChannel, type OverwriteResolvable, userMention } from "discord.js";
 import { ACCESS_DATABASE, HexCodes } from "../util";
-import { SterlingEmbed } from "src/models";
+import { SterlingEmbed } from "../models";
 
 async function monitorAccess(client: Client) {
 	let t = setInterval(async () => {
