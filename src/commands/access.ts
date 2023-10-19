@@ -134,6 +134,8 @@ module.exports = {
 		const subcmd = interaction.options.getSubcommand();
 		const initiator = await interaction.guild?.members.fetch(interaction.member?.user.id as string);
 
+		let e;
+
 		if (subcmd === 'grant') {
 			const iden = interaction.options.getString('iden') as string;
 			const user = interaction.options.getUser('member') as User;
@@ -156,24 +158,18 @@ module.exports = {
 					]
 				});
 
-				const e = SterlingEmbed.casual()
+				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Green)
 					.setTitle('Access Granted')
 					.setDescription(`Access to private channel "${iden}" was granted to ${userMention(member.id)}`);
-				interaction.reply({
-					embeds: [e.export()]
-				});
 			} else {
-				const e = SterlingEmbed.casual()
+				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Yellow)
 					.setTitle('Access Identifier Error')
 					.setDescription(`Identifier "${iden}" does not exist!`);
-				interaction.reply({
-					embeds: [e.export()]
-				});
 			}
 		} else if (subcmd === 'request') {
-			unsupportedCommand(interaction);
+			return unsupportedCommand(interaction);
 		} else if (subcmd === 'revoke') {
 			const iden = interaction.options.getString('iden') as string;
 			let user = interaction.options.getUser('member');
@@ -201,26 +197,25 @@ module.exports = {
 					]
 				});
 
-				const e = SterlingEmbed.casual()
+				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Green)
 					.setTitle('Access Revoked')
 					.setDescription(`Access to private channel "${iden}" was revoked from ${userMention(member.id)}`);
-				interaction.reply({
-					embeds: [e.export()],
-				});
 			} else {
-				const e = SterlingEmbed.casual()
+				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Yellow)
 					.setTitle('Access Identifier Error')
 					.setDescription(`Identifier "${iden}" does not exist!`);
-				interaction.reply({
-					embeds: [e.export()],
-				});
 			}
 		} else if (subcmd === 'start') {
-			unsupportedCommand(interaction);
+			return unsupportedCommand(interaction);
 		} else if (subcmd === 'stop') {
-			unsupportedCommand(interaction);
+			return unsupportedCommand(interaction);
+		} else {
+			return;
 		}
+		interaction.reply({
+			embeds: [e.export()]
+		});
 	},
 };
