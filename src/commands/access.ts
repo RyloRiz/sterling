@@ -145,18 +145,22 @@ module.exports = {
 
 			if (ACCESS_DATA) {
 				const channel = await interaction.guild?.channels.fetch(ACCESS_DATA.channel_id) as TextChannel;
-				await channel.edit({
-					permissionOverwrites: [
-						{
-							id: member.id,
-							allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
-						},
-						{
-							id: interaction.guild?.roles.everyone.id as string,
-							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
-						}
-					]
+				await channel.permissionOverwrites.edit(member.id, {
+					ViewChannel: true,
+					SendMessages: true,
 				});
+				// await channel.edit({
+				// 	permissionOverwrites: [
+				// 		{
+				// 			id: member.id,
+				// 			allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+				// 		},
+				// 		{
+				// 			id: interaction.guild?.roles.everyone.id as string,
+				// 			deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+				// 		}
+				// 	]
+				// });
 
 				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Green)
@@ -184,18 +188,22 @@ module.exports = {
 
 			if (ACCESS_DATA) {
 				const channel = await interaction.guild?.channels.fetch(ACCESS_DATA.channel_id) as TextChannel;
-				await channel.edit({
-					permissionOverwrites: [
-						{
-							id: member.id,
-							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
-						},
-						{
-							id: interaction.guild?.roles.everyone.id as string,
-							deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
-						}
-					]
+				await channel.permissionOverwrites.edit(member.id, {
+					ViewChannel: false,
+					SendMessages: false,
 				});
+				// await channel.edit({
+				// 	permissionOverwrites: [
+				// 		{
+				// 			id: member.id,
+				// 			deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+				// 		},
+				// 		{
+				// 			id: interaction.guild?.roles.everyone.id as string,
+				// 			deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+				// 		}
+				// 	]
+				// });
 
 				e = SterlingEmbed.casual()
 					.setColor(HexCodes.Green)
