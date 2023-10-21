@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, ChatInputCommandInteraction, GuildMember, PermissionsBitField, parseResponse, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User } from 'discord.js';
+import { SlashCommandBuilder, CommandInteraction, ChatInputCommandInteraction, GuildMember, PermissionsBitField, parseResponse, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention } from 'discord.js';
 import { globals, HexCodes } from '../util';
 import { SterlingEmbed } from '../models';
 
@@ -317,6 +317,45 @@ module.exports = {
 								.setName('duration')
 								.setDescription('The length in seconds to timeout the member')
 								.setRequired(true)))
+		)
+		.addSubcommandGroup(group =>
+			group
+				.setName('message')
+				.setDescription('Message interface')
+				.addSubcommand(sub =>
+					sub
+						.setName('send')
+						.setDescription('Send a message in the guild')
+						.addChannelOption(option =>
+							option
+								.setName('channel')
+								.setDescription('The channel to send to')
+								.setRequired(true))
+						.addStringOption(option =>
+							option
+								.setName('content')
+								.setDescription('The content of the message')
+								.setRequired(true)))
+
+				.addSubcommand(sub =>
+					sub
+						.setName('delete')
+						.setDescription('Delete a message in the guild')
+						.addChannelOption(option =>
+							option
+								.setName('channel')
+								.setDescription('The channel to delete from')
+								.setRequired(true))
+						.addStringOption(option =>
+							option
+								.setName('message_id')
+								.setDescription('The id of the message')
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -677,6 +716,25 @@ module.exports = {
 					}
 
 					break;
+				case 'message':
+
+					if (subcmd === 'create') {
+					} else if (subcmd === 'delete') {
+						const channel = interaction.options.getChannel('channel') as TextChannel;
+						const mid = interaction.options.getString('message_id') as string;
+						const silent = (interaction.options.getBoolean('silent') as boolean) || false;
+
+						await channel.messages.delete(mid);
+
+						if (!silent) {
+							embed
+								.setTitle('Message deleted')
+								.setDescription(`A message was deleted in ${channelMention(channel.id)}`);
+						}
+					}
+
+					break;
+
 				case 'role':
 
 					if (subcmd === 'create') {
