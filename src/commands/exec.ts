@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, ChatInputCommandInteraction, GuildMember, PermissionsBitField, parseResponse, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention } from 'discord.js';
+import { SlashCommandBuilder, CommandInteraction, ChatInputCommandInteraction, GuildMember, PermissionsBitField, parseResponse, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention, InteractionResponse, InteractionReplyOptions } from 'discord.js';
 import { globals, HexCodes } from '../util';
 import { SterlingEmbed } from '../models';
 
@@ -722,15 +722,12 @@ module.exports = {
 					} else if (subcmd === 'delete') {
 						const channel = interaction.options.getChannel('channel') as TextChannel;
 						const mid = interaction.options.getString('message_id') as string;
-						const silent = (interaction.options.getBoolean('silent') as boolean) || false;
 
 						await channel.messages.delete(mid);
 
-						if (!silent) {
-							embed
-								.setTitle('Message deleted')
-								.setDescription(`A message was deleted in ${channelMention(channel.id)}`);
-						}
+						embed
+							.setTitle('Message deleted')
+							.setDescription(`A message was deleted in ${channelMention(channel.id)}`);
 					}
 
 					break;
@@ -759,9 +756,17 @@ module.exports = {
 					break;
 			}
 
-			await interaction.reply({
+			const silent = (interaction.options.getBoolean('silent') as boolean) || false;
+
+			let replyOptions: InteractionReplyOptions = {
 				embeds: [embed.export()]
-			});
+			}
+
+			if (silent) {
+				replyOptions.ephemeral = true;
+			}
+
+			await interaction.reply(replyOptions);
 		} else {
 			const errorE = SterlingEmbed.casual()
 				.setColor(HexCodes.Orange)
