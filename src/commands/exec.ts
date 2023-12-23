@@ -175,53 +175,53 @@ module.exports = {
 								.setDescription('Do this action silently')
 								.setRequired(false)))
 		)
-		.addSubcommandGroup(group =>
-			group
-				.setName('emoji')
-				.setDescription('Emoji interface')
-				.addSubcommand(sub =>
-					sub
-						.setName('create')
-						.setDescription('Create a new emoji in the guild')
-						.addStringOption(option =>
-							option
-								.setName('name')
-								.setDescription('The name of the new emoji')
-								.setRequired(true))
-						.addAttachmentOption(option =>
-							option
-								.setName('attachment')
-								.setDescription('The image for the emoji')
-								.setRequired(true))
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
-				.addSubcommand(sub =>
-					sub
-						.setName('delete')
-						.setDescription('Create a new emoji in the guild')
-						.addStringOption(option =>
-							option
-								.setName('name')
-								.setDescription('The name of the emoji to delete')
-								.setRequired(true))
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
-				.addSubcommand(sub =>
-					sub
-						.setName('list')
-						.setDescription('List the emojis in the guild')
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
-		)
+		// .addSubcommandGroup(group =>
+		// 	group
+		// 		.setName('emoji')
+		// 		.setDescription('Emoji interface')
+		// 		.addSubcommand(sub =>
+		// 			sub
+		// 				.setName('create')
+		// 				.setDescription('Create a new emoji in the guild')
+		// 				.addStringOption(option =>
+		// 					option
+		// 						.setName('name')
+		// 						.setDescription('The name of the new emoji')
+		// 						.setRequired(true))
+		// 				.addAttachmentOption(option =>
+		// 					option
+		// 						.setName('attachment')
+		// 						.setDescription('The image for the emoji')
+		// 						.setRequired(true))
+		// 				.addBooleanOption(option =>
+		// 					option
+		// 						.setName('silent')
+		// 						.setDescription('Do this action silently')
+		// 						.setRequired(false)))
+		// 		.addSubcommand(sub =>
+		// 			sub
+		// 				.setName('delete')
+		// 				.setDescription('Create a new emoji in the guild')
+		// 				.addStringOption(option =>
+		// 					option
+		// 						.setName('name')
+		// 						.setDescription('The name of the emoji to delete')
+		// 						.setRequired(true))
+		// 				.addBooleanOption(option =>
+		// 					option
+		// 						.setName('silent')
+		// 						.setDescription('Do this action silently')
+		// 						.setRequired(false)))
+		// 		.addSubcommand(sub =>
+		// 			sub
+		// 				.setName('list')
+		// 				.setDescription('List the emojis in the guild')
+		// 				.addBooleanOption(option =>
+		// 					option
+		// 						.setName('silent')
+		// 						.setDescription('Do this action silently')
+		// 						.setRequired(false)))
+		// )
 		.addSubcommandGroup(group =>
 			group
 				.setName('guild')
@@ -752,52 +752,52 @@ module.exports = {
 					}
 
 					break;
-				case 'emoji':
+				// case 'emoji':
 
-					if (subcmd === 'create') {
-						embed
-							.setColor(HexCodes.Yellow)
-							.setTitle('Sorry!')
-							.setDescription(`Sterling can't create emojis currently. Check again in the next update!`);
-						// const name = interaction.options.getString('name') as string;
-						// const attachment = interaction.options.getAttachment('attachment') as Attachment;
-						// console.log(attachment.url);
-						// await interaction.deferReply();
-						// let e = await emojis?.create({
-						// 	attachment: attachment.url,
-						// 	name: name
-						// });
-						// console.log('Emoji created');
-						// embed
-						// 	.setTitle('Emoji created')
-						// 	.setDescription(`Emoji <:${name}:${e?.id}> was created`);
-					} else if (subcmd === 'delete') {
-						const name = interaction.options.getString('name') as string;
-						let all = await emojis?.fetch();
-						let toDelete = all?.find(e => e.name === name);
-						if (toDelete) {
-							await emojis?.delete(toDelete);
-							embed
-								.setTitle('Emoji deleted')
-								.setDescription(`Emoji "${name}" was deleted`);
-						} else {
-							embed
-								.setColor(HexCodes.Orange)
-								.setTitle('Error when deleting emoji')
-								.setDescription(`There is no emoji named "${name}"`);
-						}
-					} else if (subcmd === 'list') {
-						let all = await emojis?.fetch();
-						let str = '';
-						all?.forEach(e => str += '- ' + (e.animated ? `a:${e.name}:${e.id}` : `:${e.name}:${e.id}`) + '\n');
-						embed
-							.setTitle(`Channels in ${guild?.name}`)
-							.addFields(
-								{ name: 'Emojis', value: str }
-							);
-					}
+				// 	if (subcmd === 'create') {
+				// 		embed
+				// 			.setColor(HexCodes.Yellow)
+				// 			.setTitle('Sorry!')
+				// 			.setDescription(`Sterling can't create emojis currently. Check again in the next update!`);
+				// 		// const name = interaction.options.getString('name') as string;
+				// 		// const attachment = interaction.options.getAttachment('attachment') as Attachment;
+				// 		// console.log(attachment.url);
+				// 		// await interaction.deferReply();
+				// 		// let e = await emojis?.create({
+				// 		// 	attachment: attachment.url,
+				// 		// 	name: name
+				// 		// });
+				// 		// console.log('Emoji created');
+				// 		// embed
+				// 		// 	.setTitle('Emoji created')
+				// 		// 	.setDescription(`Emoji <:${name}:${e?.id}> was created`);
+				// 	} else if (subcmd === 'delete') {
+				// 		const name = interaction.options.getString('name') as string;
+				// 		let all = await emojis?.fetch();
+				// 		let toDelete = all?.find(e => e.name === name);
+				// 		if (toDelete) {
+				// 			await emojis?.delete(toDelete);
+				// 			embed
+				// 				.setTitle('Emoji deleted')
+				// 				.setDescription(`Emoji "${name}" was deleted`);
+				// 		} else {
+				// 			embed
+				// 				.setColor(HexCodes.Orange)
+				// 				.setTitle('Error when deleting emoji')
+				// 				.setDescription(`There is no emoji named "${name}"`);
+				// 		}
+				// 	} else if (subcmd === 'list') {
+				// 		let all = await emojis?.fetch();
+				// 		let str = '';
+				// 		all?.forEach(e => str += '- ' + (e.animated ? `a:${e.name}:${e.id}` : `:${e.name}:${e.id}`) + '\n');
+				// 		embed
+				// 			.setTitle(`Channels in ${guild?.name}`)
+				// 			.addFields(
+				// 				{ name: 'Emojis', value: str }
+				// 			);
+				// 	}
 
-					break;
+				// 	break;
 				case 'guild':
 
 					if (subcmd === 'create') {
