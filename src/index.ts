@@ -117,10 +117,14 @@ client.login(TOKEN)
 			],
 			status: PresenceUpdateStatus.Online,
 		});
+		console.log(`Sterling bot is online`);
 		monitorAccess(client);
 		// client.user?.setPresence({
 		// 	status: PresenceUpdateStatus.Invisible,
 		// });
+	})
+	.catch((reason: any) => {
+		console.log(`Sterling bot failed while running or on startup: ${reason}`);
 	});
 
 /*
