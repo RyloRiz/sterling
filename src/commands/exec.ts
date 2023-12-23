@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, CommandInteraction, ChatInputCommandInteraction, GuildMember, PermissionsBitField, parseResponse, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention, InteractionResponse, InteractionReplyOptions } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMember, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention, InteractionReplyOptions } from 'discord.js';
 import { globals, HexCodes } from '../util';
 import { SterlingEmbed } from '../models';
 
@@ -32,10 +32,10 @@ module.exports = {
 							option
 								.setName('topic')
 								.setDescription('The topic of the new channel'))
-						// .addBooleanOption(option =>
-						// 	option
-						// 		.setName('silent')
-						// 		.setDescription('Whether to run silently or not'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Whether to run silently or not'))
 				)
 				.addSubcommand(sub =>
 					sub
@@ -49,7 +49,12 @@ module.exports = {
 							option
 								.setName('channel')
 								.setDescription('The channel to modify')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-name')
@@ -63,7 +68,12 @@ module.exports = {
 							option
 								.setName('name')
 								.setDescription('The name of the channel')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-nsfw')
@@ -77,7 +87,12 @@ module.exports = {
 							option
 								.setName('nsfw')
 								.setDescription('The new NSFW status of the channel')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-parent')
@@ -92,7 +107,12 @@ module.exports = {
 								.setName('parent')
 								.setDescription('The parent category channel')
 								.addChannelTypes(ChannelType.GuildCategory)
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-slowmode')
@@ -106,7 +126,12 @@ module.exports = {
 							option
 								.setName('limit')
 								.setDescription('The slowmode limit')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-topic')
@@ -121,7 +146,12 @@ module.exports = {
 							option
 								.setName('topic')
 								.setDescription('The topic of the channel')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('nuke')
@@ -138,7 +168,12 @@ module.exports = {
 								.setDescription('The numbers of messages to nuke starting from the latest sent')
 								.setMinValue(1)
 								.setMaxValue(99)
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -157,7 +192,12 @@ module.exports = {
 							option
 								.setName('attachment')
 								.setDescription('The image for the emoji')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('delete')
@@ -166,11 +206,21 @@ module.exports = {
 							option
 								.setName('name')
 								.setDescription('The name of the emoji to delete')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('list')
-						.setDescription('List the emojis in the guild'))
+						.setDescription('List the emojis in the guild')
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -184,15 +234,30 @@ module.exports = {
 							option
 								.setName('name')
 								.setDescription('The name of the new guild')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('delete')
-						.setDescription('Delete this guild'))
+						.setDescription('Delete this guild')
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('get-audit')
-						.setDescription('Fetch the audit log'))
+						.setDescription('Fetch the audit log')
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-icon')
@@ -201,7 +266,12 @@ module.exports = {
 							option
 								.setName('icon')
 								.setDescription('The new icon of the guild')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-name')
@@ -210,7 +280,12 @@ module.exports = {
 							option
 								.setName('name')
 								.setDescription('The new name of the guild')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-owner')
@@ -219,7 +294,12 @@ module.exports = {
 							option
 								.setName('user')
 								.setDescription('The new owner of the guild')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -238,7 +318,12 @@ module.exports = {
 							option
 								.setName('role')
 								.setDescription('The role to add')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('remove-role')
@@ -252,7 +337,12 @@ module.exports = {
 							option
 								.setName('role')
 								.setDescription('The role to remove')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('ban')
@@ -261,7 +351,12 @@ module.exports = {
 							option
 								.setName('member')
 								.setDescription('The member to modify')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('deafen')
@@ -270,7 +365,12 @@ module.exports = {
 							option
 								.setName('member')
 								.setDescription('The member to modify')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('kick')
@@ -279,7 +379,12 @@ module.exports = {
 							option
 								.setName('member')
 								.setDescription('The member to modify')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('mute')
@@ -288,7 +393,12 @@ module.exports = {
 							option
 								.setName('member')
 								.setDescription('The member to modify')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('nickname')
@@ -302,7 +412,12 @@ module.exports = {
 							option
 								.setName('nickname')
 								.setDescription('The new nickname of the member')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('timeout')
@@ -316,7 +431,12 @@ module.exports = {
 							option
 								.setName('duration')
 								.setDescription('The length in seconds to timeout the member')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -335,7 +455,12 @@ module.exports = {
 							option
 								.setName('content')
 								.setDescription('The content of the message')
-								.setRequired(true)))
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 
 				.addSubcommand(sub =>
 					sub
@@ -389,11 +514,21 @@ module.exports = {
 						.addIntegerOption(option =>
 							option
 								.setName('position')
-								.setDescription('The position of the new role')))
+								.setDescription('The position of the new role'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('list')
-						.setDescription('List the roles in the guild'))
+						.setDescription('List the roles in the guild')
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('delete')
@@ -401,7 +536,12 @@ module.exports = {
 						.addRoleOption(option =>
 							option
 								.setName('role')
-								.setDescription('The role to modify')))
+								.setDescription('The role to modify'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-color')
@@ -413,7 +553,12 @@ module.exports = {
 						.addStringOption(option =>
 							option
 								.setName('color')
-								.setDescription('The new color of the role')))
+								.setDescription('The new color of the role'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-hoist')
@@ -425,7 +570,12 @@ module.exports = {
 						.addBooleanOption(option =>
 							option
 								.setName('hoist')
-								.setDescription('Whether the role should hoist or not')))
+								.setDescription('Whether the role should hoist or not'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-mentionable')
@@ -437,7 +587,12 @@ module.exports = {
 						.addBooleanOption(option =>
 							option
 								.setName('mentionable')
-								.setDescription('Whether the role can be mentioned by everyone or not')))
+								.setDescription('Whether the role can be mentioned by everyone or not'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-permissions')
@@ -449,7 +604,12 @@ module.exports = {
 						.addStringOption(option =>
 							option
 								.setName('permisions')
-								.setDescription('The new permisions of the role')))
+								.setDescription('The new permisions of the role'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-position')
@@ -461,7 +621,12 @@ module.exports = {
 						.addIntegerOption(option =>
 							option
 								.setName('position')
-								.setDescription('The new position of the role')))
+								.setDescription('The new position of the role'))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.setDMPermission(false),
 
