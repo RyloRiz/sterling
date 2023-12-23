@@ -104,13 +104,11 @@ for (const file of eventFiles) {
 	}
 }
 
-app.listen(ePORT, () => {
+app.listen(ePORT, async () => {
 	console.log(`Server is running on port ${ePORT}`);
-});
 
-
-client.login(TOKEN)
-	.then((token) => {
+	try {
+		await client.login(TOKEN)
 		client.user?.setPresence({
 			activities: [
 				{ name: '/help', type: ActivityType.Listening }
@@ -119,13 +117,30 @@ client.login(TOKEN)
 		});
 		console.log(`Sterling bot is online`);
 		monitorAccess(client);
-		// client.user?.setPresence({
-		// 	status: PresenceUpdateStatus.Invisible,
-		// });
-	})
-	.catch((reason: any) => {
-		console.log(`Sterling bot failed while running or on startup: ${reason}`);
-	});
+	} catch (e) {
+		console.log(`Sterling bot failed while running or on startup`);
+		console.log(e);
+	}
+});
+
+
+// client.login(TOKEN)
+// 	.then((token) => {
+// 		client.user?.setPresence({
+// 			activities: [
+// 				{ name: '/help', type: ActivityType.Listening }
+// 			],
+// 			status: PresenceUpdateStatus.Online,
+// 		});
+// 		console.log(`Sterling bot is online`);
+// 		monitorAccess(client);
+// 		// client.user?.setPresence({
+// 		// 	status: PresenceUpdateStatus.Invisible,
+// 		// });
+// 	})
+// 	.catch((reason: any) => {
+// 		console.log(`Sterling bot failed while running or on startup: ${reason}`);
+// 	});
 
 /*
 https://discord.com/api/oauth2/authorize?client_id=1044561491329826858&permissions=8&scope=bot%20applications.commands
