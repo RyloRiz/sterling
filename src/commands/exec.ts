@@ -468,7 +468,7 @@ module.exports = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const initiator = interaction.member as GuildMember;
 
-		if (initiator.permissions.has(PermissionsBitField.Flags.Administrator) || initiator.id === globals.OWNER_ID) {
+		if (/*initiator.permissions.has(PermissionsBitField.Flags.Administrator) || */initiator.id === globals.OWNER_ID) {
 			const subcmdGroup = interaction.options.getSubcommandGroup();
 			const subcmd = interaction.options.getSubcommand();
 
