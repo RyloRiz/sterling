@@ -26,8 +26,8 @@
         "src/index.ts"
     ],
     "include": [
-        "./**/*.ts",
-		"./discord.d.ts"
+        "src/**/*.ts",
+		"discord.d.ts"
     ],
     "exclude": [
         "node_modules",
