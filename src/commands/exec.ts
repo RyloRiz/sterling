@@ -286,20 +286,20 @@ module.exports = {
 								.setName('silent')
 								.setDescription('Do this action silently')
 								.setRequired(false)))
-				.addSubcommand(sub =>
-					sub
-						.setName('set-owner')
-						.setDescription('Change the owner of the guild')
-						.addUserOption(option =>
-							option
-								.setName('user')
-								.setDescription('The new owner of the guild')
-								.setRequired(true))
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
+				// .addSubcommand(sub =>
+				// 	sub
+				// 		.setName('set-owner')
+				// 		.setDescription('Change the owner of the guild')
+				// 		.addUserOption(option =>
+				// 			option
+				// 				.setName('user')
+				// 				.setDescription('The new owner of the guild')
+				// 				.setRequired(true))
+				// 		.addBooleanOption(option =>
+				// 			option
+				// 				.setName('silent')
+				// 				.setDescription('Do this action silently')
+				// 				.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('set-slowmode')
@@ -399,20 +399,20 @@ module.exports = {
 								.setName('silent')
 								.setDescription('Do this action silently')
 								.setRequired(false)))
-				.addSubcommand(sub =>
-					sub
-						.setName('mute')
-						.setDescription('Mute a member')
-						.addUserOption(option =>
-							option
-								.setName('member')
-								.setDescription('The member to modify')
-								.setRequired(true))
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
+				// .addSubcommand(sub =>
+				// 	sub
+				// 		.setName('mute')
+				// 		.setDescription('Mute a member')
+				// 		.addUserOption(option =>
+				// 			option
+				// 				.setName('member')
+				// 				.setDescription('The member to modify')
+				// 				.setRequired(true))
+				// 		.addBooleanOption(option =>
+				// 			option
+				// 				.setName('silent')
+				// 				.setDescription('Do this action silently')
+				// 				.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('nickname')
@@ -456,26 +456,25 @@ module.exports = {
 			group
 				.setName('message')
 				.setDescription('Message interface')
-				.addSubcommand(sub =>
-					sub
-						.setName('send')
-						.setDescription('Send a message in the guild')
-						.addStringOption(option =>
-							option
-								.setName('content')
-								.setDescription('The content of the message')
-								.setRequired(true))
-						.addChannelOption(option =>
-							option
-								.setName('channel')
-								.setDescription('The channel to send to')
-								.setRequired(true))
-						.addBooleanOption(option =>
-							option
-								.setName('silent')
-								.setDescription('Do this action silently')
-								.setRequired(false)))
-
+				// .addSubcommand(sub =>
+				// 	sub
+				// 		.setName('send')
+				// 		.setDescription('Send a message in the guild')
+				// 		.addStringOption(option =>
+				// 			option
+				// 				.setName('content')
+				// 				.setDescription('The content of the message')
+				// 				.setRequired(true))
+				// 		.addChannelOption(option =>
+				// 			option
+				// 				.setName('channel')
+				// 				.setDescription('The channel to send to')
+				// 				.setRequired(true))
+				// 		.addBooleanOption(option =>
+				// 			option
+				// 				.setName('silent')
+				// 				.setDescription('Do this action silently')
+				// 				.setRequired(false)))
 				.addSubcommand(sub =>
 					sub
 						.setName('delete')
@@ -929,22 +928,23 @@ module.exports = {
 					break;
 				case 'message':
 
-					if (subcmd === 'create') {
-						const content = interaction.options.getString('content') as string;
-						let channel = interaction.options.getChannel('channel') as TextChannel | null;
+					// if (subcmd === 'create') {
+					// 	const content = interaction.options.getString('content') as string;
+					// 	let channel = interaction.options.getChannel('channel') as TextChannel | null;
 
-						if (!channel) {
-							channel = interaction.channel as TextChannel;
-						}
+					// 	if (!channel) {
+					// 		channel = interaction.channel as TextChannel;
+					// 	}
 
-						await channel.send({
-							content: content,
-						});
+					// 	await channel.send({
+					// 		content: content,
+					// 	});
 
-						embed
-							.setTitle('Message created')
-							.setDescription(`A message was created in ${channelMention(channel.id)}`);
-					} else if (subcmd === 'delete') {
+					// 	embed
+					// 		.setTitle('Message created')
+					// 		.setDescription(`A message was created in ${channelMention(channel.id)}`);
+					// } else
+					if (subcmd === 'delete') {
 						const mid = interaction.options.getString('message_id') as string;
 						let channel = interaction.options.getChannel('channel') as TextChannel | null;
 
