@@ -22,7 +22,7 @@ class User {
 
 		let interval: NodeJS.Timer;
 		interval = setInterval(async () => {
-			if (this.active === false) { clearInterval(interval); }
+			// if (this.active === false) { clearInterval(interval); }
 			if (this.changed.length === 0) { return; }
 			if (this.isNewUser) { return; }
 
