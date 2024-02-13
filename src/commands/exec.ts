@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMember, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention, InteractionReplyOptions } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMember, ChannelType, CategoryChannel, Collection, GuildChannel, TextChannel, Attachment, italic, User, channelMention, InteractionReplyOptions, Role, TextBasedChannel } from 'discord.js';
 import { globals, HexCodes } from '../util';
 import { SterlingEmbed } from '../models';
 
@@ -300,6 +300,20 @@ module.exports = {
 								.setName('silent')
 								.setDescription('Do this action silently')
 								.setRequired(false)))
+				.addSubcommand(sub =>
+					sub
+						.setName('set-slowmode')
+						.setDescription('Set global slowmode for the guild')
+						.addUserOption(option =>
+							option
+								.setName('limit')
+								.setDescription('The limit per user')
+								.setRequired(true))
+						.addBooleanOption(option =>
+							option
+								.setName('silent')
+								.setDescription('Do this action silently')
+								.setRequired(false)))
 		)
 		.addSubcommandGroup(group =>
 			group
@@ -446,15 +460,15 @@ module.exports = {
 					sub
 						.setName('send')
 						.setDescription('Send a message in the guild')
-						.addChannelOption(option =>
-							option
-								.setName('channel')
-								.setDescription('The channel to send to')
-								.setRequired(true))
 						.addStringOption(option =>
 							option
 								.setName('content')
 								.setDescription('The content of the message')
+								.setRequired(true))
+						.addChannelOption(option =>
+							option
+								.setName('channel')
+								.setDescription('The channel to send to')
 								.setRequired(true))
 						.addBooleanOption(option =>
 							option
@@ -466,16 +480,16 @@ module.exports = {
 					sub
 						.setName('delete')
 						.setDescription('Delete a message in the guild')
-						.addChannelOption(option =>
-							option
-								.setName('channel')
-								.setDescription('The channel to delete from')
-								.setRequired(true))
 						.addStringOption(option =>
 							option
 								.setName('message_id')
 								.setDescription('The id of the message')
 								.setRequired(true))
+						.addChannelOption(option =>
+							option
+								.setName('channel')
+								.setDescription('The channel to delete from')
+								.setRequired(false))
 						.addBooleanOption(option =>
 							option
 								.setName('silent')
@@ -858,25 +872,57 @@ module.exports = {
 								{ name: 'New Name', value: `<@${gm?.id}>`, inline: true }
 							);
 						guild?.setOwner(gm as GuildMember);
+					} else if (subcmd === 'set-slowmode') {
+						const limit = interaction.options.getInteger('limit') as number;
+						let channels = await guild?.channels.fetch();
+						if (channels) {
+							channels.forEach(async channel => {
+								if (channel?.type === ChannelType.GuildText) {
+									await channel.setRateLimitPerUser(limit);
+								}
+							});
+							embed
+								.setTitle('Channels slowmode changed')
+								.setDescription(`All channels have underwent a slowmode change`);
+						} else {
+							embed
+								.setColor(HexCodes.Red)
+								.setTitle('Channels slowmode change fail')
+								.setDescription(`All channels have failed to undergo a slowmode change`);
+						}
 					}
 
 					break;
 				case 'member':
 
 					if (subcmd === 'add-role') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						const role = interaction.options.getRole('role') as Role;
+						member.roles.add(role);
 					} else if (subcmd === 'remove-role') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						const role = interaction.options.getRole('role') as Role;
+						member.roles.remove(role);
 					} else if (subcmd === 'ban') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						member.ban();
 					} else if (subcmd === 'deafen') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						member.voice.setDeaf(true);
 					} else if (subcmd === 'kick') {
-					} else if (subcmd === 'mute') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						member.kick();
 					} else if (subcmd === 'nickname') {
+						const member = interaction.options.getMember('member') as GuildMember;
+						const nickname = interaction.options.getString('nickname') as string;
+						member.setNickname(nickname);
 					} else if (subcmd === 'timeout') {
 						const member = interaction.options.getMember('member') as GuildMember;
 						const s = interaction.options.getInteger('duration') as number;
-						if (s === 0) {
-							member.disableCommunicationUntil(null);
+						if (isNaN(Number(s)) || s === 0) {
+							member.timeout(null);
 						} else {
-							member.disableCommunicationUntil(Date.now() + (s * 1000));
+							member.timeout(s * 1000, "Deserved");
 						}
 					}
 
@@ -884,9 +930,27 @@ module.exports = {
 				case 'message':
 
 					if (subcmd === 'create') {
+						const content = interaction.options.getString('content') as string;
+						let channel = interaction.options.getChannel('channel') as TextChannel | null;
+
+						if (!channel) {
+							channel = interaction.channel as TextChannel;
+						}
+
+						await channel.send({
+							content: content,
+						});
+
+						embed
+							.setTitle('Message created')
+							.setDescription(`A message was created in ${channelMention(channel.id)}`);
 					} else if (subcmd === 'delete') {
-						const channel = interaction.options.getChannel('channel') as TextChannel;
 						const mid = interaction.options.getString('message_id') as string;
+						let channel = interaction.options.getChannel('channel') as TextChannel | null;
+
+						if (!channel) {
+							channel = interaction.channel as TextChannel;
+						}
 
 						await channel.messages.delete(mid);
 

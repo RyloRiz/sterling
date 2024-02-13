@@ -108,7 +108,7 @@ app.listen(ePORT, async () => {
 	console.log(`Server is running on port ${ePORT}`);
 
 	try {
-		await client.login(TOKEN)
+		await client.login(TOKEN);
 		client.user?.setPresence({
 			activities: [
 				{ name: '/help', type: ActivityType.Listening }
