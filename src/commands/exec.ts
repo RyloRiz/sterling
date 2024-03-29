@@ -660,6 +660,8 @@ module.exports = {
 				.setColor(HexCodes.Green);
 			let content: string;
 
+			let replyOptions: InteractionReplyOptions = {}
+
 			switch (subcmdGroup) {
 				case 'channel':
 
@@ -843,6 +845,15 @@ module.exports = {
 							.setColor(HexCodes.Orange)
 							.setTitle('Error when deleting guild')
 							.setDescription('Sterling cannot delete any guilds, only the owner of a guild can');
+					} else if (subcmd === 'get-audit') {
+						const audit = await guild?.fetchAuditLogs();
+						const json = audit?.entries.toJSON();
+						embed
+							.setColor(HexCodes.Orange)
+							.setTitle('Audit Logs (JSON)');
+						replyOptions['files'] = [
+							Buffer.from(JSON.stringify(json)),
+						];
 					} else if (subcmd === 'set-icon') {
 						const icon = interaction.options.getAttachment('icon') as Attachment;
 						await guild?.setIcon(icon.url);
@@ -987,9 +998,7 @@ module.exports = {
 
 			const silent = (interaction.options.getBoolean('silent') as boolean) || false;
 
-			let replyOptions: InteractionReplyOptions = {
-				embeds: [embed.export()]
-			}
+			replyOptions['embeds'] = [embed.export()]
 
 			if (silent) {
 				replyOptions.ephemeral = true;
